@@ -1,0 +1,40 @@
+<script type="text/javascript">
+// Collect query parameters in an object that we can
+// forward to SWFObject:
+if (!source) {
+    var source = 'http://mediapm.edgesuite.net/osmf/content/test/manifest-files/dynamic_Streaming.f4m'
+}           
+            var pqs = new ParsedQueryString();
+            var parameterNames = pqs.params(false);
+            
+            var parameters = {
+                src: source,
+                autoPlay: false,
+                controlBarAutoHide: false,
+                playButtonOverlay: true
+            };
+            
+            for (var i = 0; i < parameterNames.length; i++) {
+                var parameterName = parameterNames[i];
+                parameters[parameterName] = pqs.param(parameterName) ||
+                parameters[parameterName];
+            }
+            
+            // Embed the player SWF:
+            
+            swfobject.embedSWF(
+				"StrobeMediaPlayback.swf"
+				, "StrobeMediaPlayback"
+				, 640
+				, 480
+				, "10.1.0"
+				, "expressInstall.swf"
+				, parameters
+				, {
+	                allowFullScreen: "true"
+	            }
+				, {
+	                name: "StrobeMediaPlayback"
+	            }
+			);
+</script>        
