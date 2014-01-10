@@ -1,0 +1,121 @@
+<script type="text/javascript">
+                function loadStrobeMediaPlayback(source)
+                {
+                    // Collect query parameters in an object that we can
+                    // forward to SWFObject:
+                    if (!source) {
+                        var source = 'http://vgtvlive-f.akamaihd.net:80/z/20140109x76391_01@28597/manifest.f4m';
+                    }            
+                    var pqs = new ParsedQueryString();
+                    var parameterNames = pqs.params(false);
+                    
+                    var parameters = {
+                        src: source,
+                        autoPlay: false,
+                        controlBarAutoHide: false,
+                        playButtonOverlay: true,
+                        showVideoInfoOverlayOnStartUp: true,
+                        javascriptCallbackFunction: "onJavaScriptBridgeCreated",
+                        plugin_Akamai: "http://demo.drvideo.aptoma.no/vg-vanilla-strobe/AkamaiAdvancedStreamingPlugin.130925.swf"       
+                    };
+                    
+                    for (var i = 0; i < parameterNames.length; i++) {
+                        var parameterName = parameterNames[i];
+                        parameters[parameterName] = pqs.param(parameterName) ||
+                        parameters[parameterName];
+                    }
+                    
+                    if (parameters.hasOwnProperty("logFilter"))
+                    {
+                        org.osmf.player.debug.filter = parameters.logFilter;
+                        delete parameters.logFilter;
+                        document.getElementById("logFilter").value = org.osmf.player.debug.filter;
+                    }
+                    
+                    var wmodeValue = "direct";
+                    var wmodeOptions = ["direct", "opaque", "transparent", "window"];
+                    if (parameters.hasOwnProperty("wmode"))
+                    {
+                        if (wmodeOptions.indexOf(parameters.wmode) >= 0)
+                        {
+                                wmodeValue = parameters.wmode;
+                        }                       
+                        delete parameters.wmode;
+                    }
+                    
+                    // Embed the player SWF:                
+                    swfobject.embedSWF(
+                                        "StrobeMediaPlayback.130611.swf"
+                                        , "StrobeMediaPlayback"
+                                        , 640
+                                        , 480
+                                        , "10.1.0"
+                                        , "expressInstall.swf"
+                                        , parameters
+                                        , {
+                                allowFullScreen: "true",
+                                allowScriptAccess: "always",
+                                wmode: wmodeValue
+                            }
+                                        , {
+                                name: "StrobeMediaPlayback"
+                            }
+                                );
+                                
+                                
+                        }
+                        window.onload = loadStrobeMediaPlayback(source);
+                        
+                        var player = null;
+                        function onJavaScriptBridgeCreated(playerId)
+                        {
+                                if (player == null) {
+                                        player = document.getElementById(playerId);
+                                        
+                                        // Add event listeners that will update the 
+                                        player.addEventListener("isDynamicStreamChange", "updateDynamicStreamItems");
+                                        player.addEventListener("switchingChange", "updateDynamicStreamItems");
+                                        player.addEventListener("autoSwitchChange", "updateDynamicStreamItems");
+                                        player.addEventListener("mediaSizeChange", "updateDynamicStreamItems");
+                                }
+                        }
+                        
+                        function updateDynamicStreamItems()
+                        {
+                                document.getElementById("dssc").style.display = "block";
+                                var dynamicStreams = player.getStreamItems();
+                                var ds = document.getElementById("dssc-items");
+                                var switchMode = player.getAutoDynamicStreamSwitch() ? "Auto" : "Manual"; 
+                                                
+                                var dsItems = '<strong><a href="#" onclick="player.setAutoDynamicStreamSwitch(!player.getAutoDynamicStreamSwitch()); return false;"> Switch Mode: ' + switchMode + '</a></strong><br /><br />\n';
+                                var currentStreamIndex = player.getCurrentDynamicStreamIndex();
+                                for (var idx = 0; idx < dynamicStreams.length; idx ++)
+                                {
+                                        var playing = "";
+                                        if (currentStreamIndex == idx)
+                                        {
+                                                playing = "playing";
+                                        }
+                                        dsItems += '<a href="#" class="' + playing + '" onclick="switchDynamicStreamIndex(' + idx + '); return false;">'
+                                         + dynamicStreams[idx].streamName 
+                                         + ' : ' 
+                                         + dynamicStreams[idx].bitrate
+                                         + "kbps (" 
+                                         + dynamicStreams[idx].width
+                                         + "px x " 
+                                         + dynamicStreams[idx].height 
+                                         + "px)"  
+                                         + '</a><br />\n';
+                                }
+                                ds.innerHTML = dsItems;
+                        }
+                        
+                        function switchDynamicStreamIndex(index)
+                        {
+                                if (player.getAutoDynamicStreamSwitch())
+                                {
+                                        player.setAutoDynamicStreamSwitch(false);       
+                                }
+                                player.switchDynamicStreamIndex(index);
+                        }
+</script>        

@@ -1,0 +1,69 @@
+        <table width="100%" border="0" cellspacing="5">
+            <tr>
+                <td valign="top">
+                    <table width="100%" border="0" cellspacing="5">
+                        <tr>
+                            <td valign="top" colspan="3">
+                                <div id="StrobeMediaPlayback">
+                                    <p>
+                                        Alternative content
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" valign="top">  
+                                <div id="dssc" style="display:none">
+                                        <h4>Video Quality Control</h4>
+                                                                        <div id="dssc-items">
+                                                                                The available qualities will be loaded once the playback starts...
+                                                                        </div>
+                                                                </div>
+                                                                
+                                <h4>logs (the last 50 lines). New logs will be displayed if they match:
+                                <input id="logFilter" value="StrobeMediaPlayback" style="width:100%" onclick="org.osmf.player.debug.clickclear(this, org.osmf.player.debug.filter)" 
+                                                                onblur="org.osmf.player.debug.clickrecall(this, org.osmf.player.debug.filter);" onkeypress="org.osmf.player.debug.filter=this.value;"></input></h4>
+                                <div id="logs" title="Logs" class="metrics" style="overflow: auto; height:400px; width:100%;">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td id="debugConsole" valign="top" width="100%" height="100%" rowspan="4">
+                    <style type="text/css">
+                        table caption {
+                            caption-side: top;
+                            font-size: 1em;
+                            font-style: italic;
+                            font-weight: bold;
+                            text-align: left;
+                            padding: 0.5em 0;
+                        }
+                        
+                        table.metrics, table.qosObject, table.metadata {
+                            padding: 10px;
+                            width: 100%;
+                        }
+                        
+                        table.metadata {
+                            flow: left;
+                        }
+                    </style>
+                    <div style="position:absolute;right:0px;top:0px;font-size:0.8em">
+                        Press F11 to make the browser window enter/exit full screen.
+                    </div>
+                    <div style="overflow:visible;width:100%">
+                        <table width="100%">
+<tr>
+                            <td colspan="3" valign="top">
+                                <div id="dssc" style="display:none">
+                                        <h4>Video Quality Control</h4>
+                                                                        <div id="dssc-items">
+
+      The available qualities will be loaded once the playback starts...
+                                                                        </div>
+                                                                </div>
+
+                </td>
+            </tr>
+        </table>
